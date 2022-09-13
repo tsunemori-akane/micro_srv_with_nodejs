@@ -1,0 +1,58 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: caldevens/client    # name of the image to be built
+      context: client            # directory containing the artifact's sources
+      docker:                    # describes an artifact built from a Dockerfile
+        dockerfile: Dockerfile   # locates the Dockerfile relative to workspace
+      sync:                      # local filed synced to pods instead of triggering an image build when modified
+        manual:                  # manual sync rules indicating the source and destination
+          - src: 'src/**/*.js'
+            dest: .              # destination path in the container where the files should be synced to 
+    - image: caldevens/comments    
+      context: comments            
+      docker:                    
+        dockerfile: Dockerfile   
+      sync:                      
+        manual:                  
+          - src: '*.js'
+            dest: . 
+    - image: caldevens/event-bus   
+      context: event-bus            
+      docker:                    
+        dockerfile: Dockerfile   
+      sync:                      
+        manual:                  
+          - src: '*.js'
+            dest: . 
+    - image: caldevens/moderation    
+      context: moderation            
+      docker:                    
+        dockerfile: Dockerfile   
+      sync:                      
+        manual:                  
+          - src: '*.js'
+            dest: . 
+    - image: caldevens/posts  
+      context: posts            
+      docker:                    
+        dockerfile: Dockerfile   
+      sync:                      
+        manual:                  
+          - src: '*.js'
+            dest: . 
+    - image: caldevens/query
+      context: query          
+      docker:                    
+        dockerfile: Dockerfile   
+      sync:                      
+        manual:                  
+          - src: '*.js'
+            dest: . 
