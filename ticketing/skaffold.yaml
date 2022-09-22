@@ -1,0 +1,21 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  local:
+    push: false
+  # googleCloudBuild:
+  #   projectId: ticketing-dev-362512
+  artifacts:
+    - image: caldevens/auth     # name of the image to be built
+      context: auth              # directory containing the artifact's sources
+      docker:                    # describes an artifact built from a Dockerfile
+        dockerfile: Dockerfile   # locates the Dockerfile relative to workspace
+      sync:                      # local filed synced to pods instead of triggering an image build when modified
+        manual:                  # manual sync rules indicating the source and destination
+          - src: 'src/**/*.ts'
+            dest: .              # destination path in the container where the files should be synced to 
+    

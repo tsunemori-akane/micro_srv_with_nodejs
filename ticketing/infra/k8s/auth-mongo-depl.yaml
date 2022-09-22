@@ -1,0 +1,31 @@
+apiVersion: apps/v1      # 使用kubectl api-versions 查看cluster支持的版本
+kind: Deployment
+metadata:
+  name: auth-mongo-depl
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-mongo
+  template:              #pod的模版
+    metadata:
+      labels:
+        app: auth-mongo  #line 25
+    spec:
+      containers:
+        - name: auth-mongo
+          image: mongo   #docker official image
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-mongo-srv
+spec: 
+  selector:
+    app: auth-mongo
+  type: ClusterIP
+  ports: 
+    - name: db
+      protocol: TCP
+      port: 27017
+      targetPort: 27017
