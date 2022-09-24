@@ -27,7 +27,7 @@ async (req:Request, res:Response) => {
     //Generate JWT
     const userJwt = jwt.sign({
         id: existingUser.id,
-        emial: existingUser.email
+        email: existingUser.email
     }, 
     process.env.JWT_KEY!
     );
@@ -37,7 +37,7 @@ async (req:Request, res:Response) => {
         jwt: userJwt
     }
 
-    res.status(201).send(existingUser);
+    res.status(200).send(existingUser);
 });
 
 export { router as signinRouter }

@@ -7,8 +7,8 @@ WORKDIR /app
 # Copy over only the package.json file
 COPY package.json ./
 #RUN npm config set registry https://registry.npmmirror.com
+# RUN npm install --only=prod
 RUN npm install
-
 # copy over all of our remaining source code
 COPY ./ ./
 # set the command to run when the container starts up
